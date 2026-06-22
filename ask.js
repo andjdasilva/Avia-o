@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e1a">
+<title>AeroLex – Legislação Aeronáutica</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --sky-dark: #0a0e1a;
+    --sky-mid: #0f1729;
+    --sky-panel: #131d35;
+    --sky-border: #1e2d4d;
+    --horizon: #1a3a6e;
+    --blue-accent: #2563eb;
+    --blue-light: #3b82f6;
+    --blue-glow: #60a5fa;
+    --amber: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --text-primary: #e8edf8;
+    --text-secondary: #8fa3c8;
+    --text-muted: #4a6080;
+    --faa-color: #1d4ed8;
+    --easa-color: #0369a1;
+    --anac-color: #15803d;
+    --bottom-nav-h: 64px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: var(--sky-dark);
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--sky-mid);
+    border-bottom: 1px solid var(--sky-border);
+    padding: 0 1.25rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .logo-icon {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, var(--blue-accent), var(--blue-glow));
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  .logo span { color: var(--blue-glow); }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-badge {
+    background: var(--blue-accent);
+    color: white;
+    font-size: 0.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── BOTTOM NAV (mobile) ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: var(--bottom-nav-h);
+    background: var(--sky-mid);
+    border-top: 1px solid var(--sky-border);
+    display: flex;
+    z-index: 200;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    transition: color 0.2s;
+    padding: 0;
+  }
+
+  .bottom-nav-item.active { color: var(--blue-glow); }
+
+  .bottom-nav-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── SCROLL AREA ── */
+  .scroll-area {
+    padding-bottom: calc(var(--bottom-nav-h) + 1rem + env(safe-area-inset-bottom));
+  }
+
+  /* ── HOME PAGE ── */
+  .hero {
+    padding: 1.5rem 1rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--blue-glow);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.6rem;
+  }
+
+  .hero h1 em { font-style: normal; color: var(--blue-glow); }
+
+  .hero p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── AUTHORITY PILLS ── */
+  .authority-strip {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+  }
+
+  .authority-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .pill-faa  { background: rgba(29,78,216,0.15);  border-color: rgba(29,78,216,0.4);  color: #93c5fd; }
+  .pill-easa { background: rgba(3,105,161,0.15);  border-color: rgba(3,105,161,0.4);  color: #7dd3fc; }
+  .pill-anac { background: rgba(21,128,61,0.15);  border-color: rgba(21,128,61,0.4);  color: #6ee7b7; }
+
+  .pill-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: blink 2s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--sky-border); }
+
+  /* ── NEWS ── */
+  .news-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .news-card {
+    background: var(--sky-panel);
+    border: 1px solid var(--sky-border);
+    border-radius: 10px;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+
+  .news-card:active { border-color: var(--blue-accent); }
+
+  .news-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .news-card.faa::before  { background: var(--faa-color); }
+  .news-card.easa::before { background: var(--easa-color); }
+  .news-card.anac::before { background: var(--anac-color); }
+
+  .news-source {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .news-card.faa  .news-source { color: #93c5fd; }
+  .news-card.easa .news-source { color: #7dd3fc; }
+  .news-card.anac .news-source { color: #6ee7b7; }
+
+  .news-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.4rem;
+    color: var(--text-primary);
+  }
+
+  .news-date {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  /* ── CONSULTA PAGE ── */
+  .consulta-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+  }
+
+  /* Authority tabs — big tap targets on mobile */
+  .authority-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .auth-tab {
+    padding: 12px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--sky-border);
+    background: var(--sky-panel);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'Space Grotesk', sans-serif;
+    text-align: center;
+    touch-action: manipulation;
+  }
+
+  .auth-tab.selected-faa  { background: rgba(29,78,216,0.2);  border-color: #2563eb; color: #93c5fd; }
+  .auth-tab.selected-easa { background: rgba(3,105,161,0.2);  border-color: #0369a1; color: #7dd3fc; }
+  .auth-tab.selected-anac { background: rgba(21,128,61,0.2);  border-color: #15803d; color: #6ee7b7; }
+
+  /* Quick topics scrollable row */
+  .quick-topics-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 1rem;
+  }
+  .quick-topics-scroll::-webkit-scrollbar { display: none; }
+
+  .quick-topics {
+    display: flex;
+    gap: 0.5rem;
+    width: max-content;
+    padding-bottom: 2px;
+  }
+
+  .quick-btn {
+    padding: 7px 14px;
+    border: 1px solid var(--sky-border);
+    border-radius: 20px;
+    background: none;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    white-space: nowrap;
+    touch-action: manipulation;
+    transition: all 0.15s;
+  }
+  .quick-btn:active {
+    border-color: var(--blue-accent);
+    color: var(--blue-glow);
+    background: rgba(37,99,235,0.08);
+  }
+
+  /* Search box */
+  .search-box {
+    background: var(--sky-panel);
+    border: 1px solid var(--sky-border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+  .search-box:focus-within { border-color: var(--blue-accent); }
+
+  .search-box textarea {
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    resize: none;
+    min-height: 72px;
+  }
+  .search-box textarea::placeholder { color: var(--text-muted); }
+
+  .search-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .search-hint {
+    font-size: 0.67rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .btn-search {
+    background: var(--blue-accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    touch-action: manipulation;
+    transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
+  }
+  .btn-search:active  { transform: scale(0.97); background: var(--blue-light); }
+  .btn-search:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Loading */
+  .loading-block {
+    display: none;
+    background: var(--sky-panel);
+    border: 1px solid var(--sky-border);
+    border-radius: 12px;
+    padding: 2rem 1rem;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .loading-block.visible { display: block; }
+
+  .radar {
+    width: 52px; height: 52px;
+    border: 2px solid var(--sky-border);
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    position: relative;
+    animation: radar-spin 1.5s linear infinite;
+  }
+  .radar::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 50%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue-glow));
+    transform-origin: left center;
+    transform: translateY(-50%);
+  }
+  @keyframes radar-spin { to { transform: rotate(360deg); } }
+
+  .loading-text  { color: var(--text-secondary); font-size: 0.85rem; }
+  .loading-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--blue-glow);
+    margin-top: 0.4rem;
+  }
+
+  /* Result */
+  .result-block { display: none; }
+  .result-block.visible { display: block; }
+
+  .result-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--sky-border);
+    flex-wrap: wrap;
+  }
+
+  .result-authority-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    flex-shrink: 0;
+  }
+  .badge-faa  { background: rgba(29,78,216,0.25); color: #93c5fd; border: 1px solid rgba(29,78,216,0.5); }
+  .badge-easa { background: rgba(3,105,161,0.25);  color: #7dd3fc; border: 1px solid rgba(3,105,161,0.5); }
+  .badge-anac { background: rgba(21,128,61,0.25);  color: #6ee7b7; border: 1px solid rgba(21,128,61,0.5); }
+
+  .result-query {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .result-sections { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  /* Accordion sections — large touch targets */
+  .result-section {
+    background: var(--sky-panel);
+    border: 1px solid var(--sky-border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    min-height: 52px;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
+  .section-header:active { background: rgba(255,255,255,0.03); }
+
+  .section-num {
+    width: 22px; height: 22px;
+    border-radius: 5px;
+    background: var(--horizon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--blue-glow);
+    flex-shrink: 0;
+  }
+
+  .section-icon { font-size: 0.85rem; flex-shrink: 0; }
+  .section-label { font-size: 0.82rem; font-weight: 600; color: var(--text-primary); flex: 1; }
+
+  .section-chevron {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .result-section.active-section .section-chevron { transform: rotate(180deg); }
+
+  .section-content {
+    padding: 0 1rem 1rem;
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    display: none;
+  }
+  .section-content.open { display: block; }
+
+  /* Content types */
+  .text-content { font-size: 0.84rem; line-height: 1.75; color: var(--text-secondary); }
+
+  .reg-content { font-size: 0.84rem; line-height: 1.8; color: var(--text-secondary); }
+
+  .reg-highlight {
+    background: rgba(37,99,235,0.18);
+    border: 1px solid rgba(96,165,250,0.35);
+    color: var(--blue-glow);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .example-box {
+    background: rgba(245,158,11,0.08);
+    border-left: 3px solid var(--amber);
+    padding: 0.8rem 0.9rem;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .safety-box {
+    background: rgba(239,68,68,0.08);
+    border-left: 3px solid var(--red);
+    padding: 0.8rem 0.9rem;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .ref-list { display: flex; flex-direction: column; gap: 0.45rem; }
+
+  .ref-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: 0.55rem 0.75rem;
+    background: rgba(37,99,235,0.06);
+    border: 1px solid var(--sky-border);
+    border-radius: 6px;
+  }
+  .ref-tag-inline { flex-shrink: 0; font-size: 0.75rem; }
+
+  .links-grid { display: flex; flex-direction: column; gap: 0.55rem; }
+
+  .link-card {
+    display: block;
+    text-decoration: none;
+    background: rgba(37,99,235,0.08);
+    border: 1px solid rgba(96,165,250,0.25);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    transition: all 0.2s;
+  }
+  .link-card:active {
+    background: rgba(37,99,235,0.16);
+    border-color: var(--blue-glow);
+  }
+  .link-card-title { font-size: 0.85rem; font-weight: 600; color: var(--blue-glow); margin-bottom: 0.2rem; }
+  .link-card-desc  { font-size: 0.76rem; color: var(--text-secondary); margin-bottom: 0.3rem; line-height: 1.4; }
+  .link-card-url   { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-muted); }
+
+  /* Aviso exemplo real */
+  .example-disclaimer {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: var(--amber);
+    line-height: 1.5;
+  }
+
+  /* ── SOBRE PAGE ── */
+  .sobre-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+  }
+
+  .sobre-card {
+    background: var(--sky-panel);
+    border: 1px solid var(--sky-border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .sobre-card h3 { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.7rem; color: var(--blue-glow); }
+  .sobre-card p  { font-size: 0.83rem; color: var(--text-secondary); line-height: 1.7; }
+
+  .source-list { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.5rem; }
+
+  .source-list li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.8rem; color: var(--text-secondary);
+  }
+
+  .source-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── DESKTOP NAV (hidden on mobile by default, shown on wider screens) ── */
+  .desktop-nav { display: none; }
+
+  /* ── RESPONSIVE BREAKPOINTS ── */
+  @media (min-width: 640px) {
+    .news-grid { grid-template-columns: repeat(2, 1fr); }
+    .consulta-wrap, .hero { padding: 2rem 1.5rem; }
+    .sobre-wrap { padding: 2rem 1.5rem; }
+  }
+
+  @media (min-width: 900px) {
+    .news-grid { grid-template-columns: repeat(3, 1fr); }
+
+    /* On desktop show top nav, hide bottom nav */
+    .bottom-nav { display: none; }
+    .desktop-nav { display: flex; gap: 1.5rem; align-items: center; }
+    .desktop-nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .desktop-nav a:hover, .desktop-nav a.active { color: var(--text-primary); }
+
+    .scroll-area { padding-bottom: 2rem; }
+    header { height: 60px; padding: 0 2rem; }
+
+    .hero h1 { font-size: 2.5rem; }
+    .news-card:hover { border-color: var(--blue-accent); transform: translateY(-2px); }
+    .link-card:hover { background: rgba(37,99,235,0.16); border-color: var(--blue-glow); transform: translateX(3px); }
+    .auth-tab:hover { border-color: var(--blue-accent); color: var(--text-primary); }
+    .quick-btn:hover { border-color: var(--blue-accent); color: var(--blue-glow); background: rgba(37,99,235,0.08); }
+    .section-header:hover { background: rgba(255,255,255,0.03); }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--sky-dark); }
+  ::-webkit-scrollbar-thumb { background: var(--horizon); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">✈</div>
+    Aero<span>Lex</span>
+  </div>
+  <!-- Desktop nav -->
+  <nav class="desktop-nav">
+    <a class="active" onclick="showPage('home', this)">Início</a>
+    <a onclick="showPage('consulta', this)">Consulta IA <span class="nav-badge">BETA</span></a>
+    <a onclick="showPage('sobre', this)">Sobre</a>
+  </nav>
+  <!-- Mobile: badge only -->
+  <div class="header-right">
+    <span class="nav-badge" style="display:block;">BETA</span>
+  </div>
+</header>
+
+<!-- ════════════ HOME ════════════ -->
+<div id="page-home" class="page active">
+  <div class="scroll-area">
+    <div class="hero">
+      <div class="hero-label">// Legislação Aeronáutica em Tempo Real</div>
+      <h1>Regulamentos aeronáuticos<br>na palma da <em>sua mão</em></h1>
+      <p>Consulte FAA, EASA e ANAC com inteligência artificial. Respostas técnicas, operacionais e regulatórias em segundos — sempre atualizadas.</p>
+
+      <div class="authority-strip">
+        <div class="authority-pill pill-faa"><div class="pill-dot"></div> FAA</div>
+        <div class="authority-pill pill-easa"><div class="pill-dot"></div> EASA</div>
+        <div class="authority-pill pill-anac"><div class="pill-dot"></div> ANAC</div>
+      </div>
+
+      <div class="section-title">Últimas atualizações regulatórias</div>
+
+      <div class="news-grid">
+        <div class="news-card faa">
+          <div class="news-source">FAA</div>
+          <div class="news-title">AD 2025-12-03: Boeing 737 MAX — Inspeção de estrutura do leme de profundidade</div>
+          <div class="news-date">15 Jun 2025 · Airworthiness Directive</div>
+        </div>
+        <div class="news-card easa">
+          <div class="news-source">EASA</div>
+          <div class="news-title">CS-25 Amendment 28 — Novos requisitos de fadiga estrutural</div>
+          <div class="news-date">10 Jun 2025 · Certification Specification</div>
+        </div>
+        <div class="news-card anac">
+          <div class="news-source">ANAC</div>
+          <div class="news-title">RBAC 121 — Resolução nº 751 altera requisitos de jornada de tripulantes</div>
+          <div class="news-date">08 Jun 2025 · Regulamento Brasileiro</div>
+        </div>
+        <div class="news-card faa">
+          <div class="news-source">FAA</div>
+          <div class="news-title">SAFO 25001: Operações em espaço aéreo congestionado com drones</div>
+          <div class="news-date">05 Jun 2025 · Safety Alert</div>
+        </div>
+        <div class="news-card easa">
+          <div class="news-source">EASA</div>
+          <div class="news-title">ED Decision 2025/006/R — Requisitos para pilotos de helicóptero</div>
+          <div class="news-date">02 Jun 2025 · Regulation</div>
+        </div>
+        <div class="news-card anac">
+          <div class="news-source">ANAC</div>
+          <div class="news-title">RBAC 91 — Alteração nos procedimentos de aproximação ILS Cat III</div>
+          <div class="news-date">28 Mai 2025 · Regulamento Brasileiro</div>
+        </div>
+      </div>
+
+      <div class="hero-cta">
+        <button class="btn-search" onclick="showPage('consulta', null); setBottomNav('consulta')">
+          ✦ Fazer uma consulta
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ CONSULTA ════════════ -->
+<div id="page-consulta" class="page">
+  <div class="scroll-area">
+    <div class="consulta-wrap">
+      <div class="section-title" style="margin-bottom:1rem">Consulta Regulatória com IA</div>
+
+      <div class="authority-tabs">
+        <button class="auth-tab selected-faa" id="tab-faa" onclick="selectAuth('faa')">✈ FAA</button>
+        <button class="auth-tab" id="tab-easa" onclick="selectAuth('easa')">🇪🇺 EASA</button>
+        <button class="auth-tab" id="tab-anac" onclick="selectAuth('anac')">🇧🇷 ANAC</button>
+      </div>
+
+      <div style="margin-bottom:0.85rem;">
+        <div class="section-title" style="margin-bottom:0.5rem">Tópicos frequentes</div>
+        <div class="quick-topics-scroll">
+          <div class="quick-topics">
+            <button class="quick-btn" onclick="fillQuestion('Quais são os requisitos de horas de voo para obter o ATP?')">ATP — Horas de voo</button>
+            <button class="quick-btn" onclick="fillQuestion('O que diz a regulação sobre FDM/FOQA?')">FDM / FOQA</button>
+            <button class="quick-btn" onclick="fillQuestion('Quais os limites de tempo de voo e descanso de tripulantes?')">Jornada tripulantes</button>
+            <button class="quick-btn" onclick="fillQuestion('Como funciona o processo de certificação de tipo de aeronave?')">Certificação de tipo</button>
+            <button class="quick-btn" onclick="fillQuestion('Quais são os requisitos para operação RVSM?')">RVSM</button>
+            <button class="quick-btn" onclick="fillQuestion('O que é e como funciona o SMS obrigatório?')">SMS</button>
+            <button class="quick-btn" onclick="fillQuestion('Quais são os requisitos de manutenção para aeronaves Part 135?')">Part 135 — Manutenção</button>
+            <button class="quick-btn" onclick="fillQuestion('O que diz a regulação sobre ETOPS?')">ETOPS</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-box">
+        <textarea id="question-input" placeholder="Digite sua pergunta regulatória aqui...&#10;Ex: Quais são os limites de jornada de tripulantes?" rows="3"></textarea>
+        <div class="search-footer">
+          <span class="search-hint" id="auth-hint">// FAA · faa.gov</span>
+          <button class="btn-search" id="btn-ask" onclick="askQuestion()">⚡ Consultar</button>
+        </div>
+      </div>
+
+      <div class="loading-block" id="loading-block">
+        <div class="radar"></div>
+        <div class="loading-text">Consultando base regulatória...</div>
+        <div class="loading-source" id="loading-source">// FAA · faa.gov</div>
+      </div>
+
+      <div class="result-block" id="result-block">
+        <div class="result-header">
+          <div class="result-authority-badge" id="result-badge">FAA</div>
+          <div class="result-query" id="result-query"></div>
+        </div>
+        <div class="result-sections" id="result-sections"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SOBRE ════════════ -->
+<div id="page-sobre" class="page">
+  <div class="scroll-area">
+    <div class="sobre-wrap">
+      <div class="section-title" style="margin-bottom:1rem">Sobre o AeroLex</div>
+
+      <div class="sobre-card">
+        <h3>O problema que resolvemos</h3>
+        <p>Profissionais de aviação gastam horas navegando entre os sites da FAA, EASA e ANAC para encontrar regulamentações atualizadas. O AeroLex centraliza essas consultas com IA, entregando respostas estruturadas em 8 dimensões técnicas.</p>
+      </div>
+
+      <div class="sobre-card">
+        <h3>Fontes oficiais utilizadas</h3>
+        <ul class="source-list">
+          <li><div class="source-dot" style="background:#93c5fd"></div> FAA — Federal Aviation Administration · faa.gov</li>
+          <li><div class="source-dot" style="background:#7dd3fc"></div> EASA — European Union Aviation Safety Agency · easa.europa.eu</li>
+          <li><div class="source-dot" style="background:#6ee7b7"></div> ANAC — Agência Nacional de Aviação Civil · anac.gov.br</li>
+        </ul>
+      </div>
+
+      <div class="sobre-card">
+        <h3>⚠️ Aviso sobre Exemplos Reais</h3>
+        <p>O campo "Exemplo Real" é gerado pela IA com base em seu treinamento sobre acidentes e ocorrências documentadas (CENIPA, NTSB, BEA, ICAO). Os casos podem conter imprecisões — verifique sempre nas fontes oficiais de investigação antes de usar em documentos técnicos.</p>
+      </div>
+
+      <div class="sobre-card">
+        <h3>Estrutura de resposta (8 dimensões)</h3>
+        <ul class="source-list">
+          <li><div class="source-dot" style="background:#60a5fa"></div> 1. Explicação Técnica</li>
+          <li><div class="source-dot" style="background:#60a5fa"></div> 2. Explicação Operacional</li>
+          <li><div class="source-dot" style="background:#60a5fa"></div> 3. Explicação Regulatória</li>
+          <li><div class="source-dot" style="background:#60a5fa"></div> 4. Impacto na Segurança Operacional</li>
+          <li><div class="source-dot" style="background:#60a5fa"></div> 5. Relação com a Aeronavegabilidade</li>
+          <li><div class="source-dot" style="background:#60a5fa"></div> 6. Exemplo Real</li>
+          <li><div class="source-dot" style="background:#60a5fa"></div> 7. Referência Normativa</li>
+          <li><div class="source-dot" style="background:#60a5fa"></div> 8. Links Oficiais da Legislação</li>
+        </ul>
+      </div>
+
+      <div class="sobre-card">
+        <h3>Versão</h3>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;">AeroLex v0.3 · Protótipo Beta · Junho 2025</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ BOTTOM NAV ════════════ -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="bottom-nav-item active" id="bn-home" onclick="showPage('home', null); setBottomNav('home')">
+    <span class="bottom-nav-icon">🏠</span>
+    <span>Início</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-consulta" onclick="showPage('consulta', null); setBottomNav('consulta')">
+    <span class="bottom-nav-icon">🔍</span>
+    <span>Consulta</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-sobre" onclick="showPage('sobre', null); setBottomNav('sobre')">
+    <span class="bottom-nav-icon">ℹ️</span>
+    <span>Sobre</span>
+  </button>
+</nav>
+
+<script>
+let selectedAuth = 'faa';
+
+const authInfo = {
+  faa:  { label:'FAA',  badge:'badge-faa',  hint:'// FAA · faa.gov', url:'https://www.faa.gov' },
+  easa: { label:'EASA', badge:'badge-easa', hint:'// EASA · easa.europa.eu', url:'https://www.easa.europa.eu' },
+  anac: { label:'ANAC', badge:'badge-anac', hint:'// ANAC · anac.gov.br', url:'https://www.anac.gov.br/assuntos/legislacao/legislacao-1/rbha-e-rbac/rbac' },
+};
+
+// ── NAVIGATION
+function showPage(id, desktopEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  // desktop nav active state
+  document.querySelectorAll('.desktop-nav a').forEach(a => a.classList.remove('active'));
+  if (desktopEl) desktopEl.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function setBottomNav(id) {
+  document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
+  const el = document.getElementById('bn-' + id);
+  if (el) el.classList.add('active');
+}
+
+// ── AUTHORITY
+function selectAuth(auth) {
+  selectedAuth = auth;
+  ['faa','easa','anac'].forEach(a => {
+    document.getElementById('tab-' + a).className = 'auth-tab';
+  });
+  document.getElementById('tab-' + auth).className = 'auth-tab selected-' + auth;
+  document.getElementById('auth-hint').textContent = authInfo[auth].hint;
+}
+
+function fillQuestion(q) {
+  document.getElementById('question-input').value = q;
+  document.getElementById('question-input').focus();
+}
+
+// ── MAIN QUERY
+async function askQuestion() {
+  const question = document.getElementById('question-input').value.trim();
+  if (!question) return;
+
+  const info = authInfo[selectedAuth];
+  const btn = document.getElementById('btn-ask');
+  btn.disabled = true;
+
+  document.getElementById('loading-block').classList.add('visible');
+  document.getElementById('result-block').classList.remove('visible');
+  document.getElementById('loading-source').textContent = info.hint;
+
+  const systemPrompt = `Você é um especialista sênior em legislação e regulamentação aeronáutica com 20+ anos de experiência, especializado nos regulamentos da ${info.label}.
+
+IDIOMA: Responda SEMPRE em Português Brasileiro, de forma técnica, precisa e detalhada.
+
+AUTORIDADE DE REFERÊNCIA: ${info.label} — ${info.url}
+
+TAREFA: Analisar a pergunta e responder com base nos regulamentos reais e vigentes da ${info.label}.
+
+FORMATO DE SAÍDA — retorne SOMENTE um objeto JSON válido, sem nenhum texto antes ou depois, sem markdown, sem backticks:
+
+{
+  "explicacao_tecnica": "Explicação técnica aprofundada do conceito, sistema, procedimento ou equipamento. Mínimo 3 parágrafos com terminologia técnica aeronáutica.",
+  "explicacao_operacional": "Como é aplicado na prática operacional — o que o piloto, mecânico, despachante ou operador efetivamente faz. Inclua procedimentos e impacto na rotina. Mínimo 2 parágrafos detalhados.",
+  "explicacao_regulatoria": "A trava jurídica e regulatória, citando parágrafos, seções e subseções específicas. Formato: '[REGULAMENTO X, Seção Y.Z]: define que... [REGULAMENTO A, Seção B.C]: exige que...' — seja extremamente específico.",
+  "impacto_seguranca": "Análise dos riscos à segurança operacional caso a regulação não seja seguida. Inclua: consequências diretas, padrões de falhas no setor, como a correta aplicação mitiga riscos. Mínimo 2 parágrafos.",
+  "aeronavegabilidade": "Como se relaciona com a aeronavegabilidade — certificação, manutenção da condição de voo, ADs/IAs relacionadas, impacto no certificado de aeronavegabilidade.",
+  "exemplo_real": "Um caso real, ocorrência documentada ou acidente investigado que ilustre o tema. Inclua: cenário, o que aconteceu, regulamento envolvido e lição aprendida. ATENÇÃO: indique a fonte (CENIPA, NTSB, BEA, ICAO ADREP ou relatório específico) ao final do exemplo.",
+  "referencia_normativa": "Lista das referências: regulamento, número, seção, subseção e título. Separe por | Exemplo: RBAC 43, Seção 43.9 — Registros de manutenção | RBAC 121, Seção 121.380 — Registros do operador",
+  "links_oficiais": [{"titulo":"Título do regulamento","url":"URL funcional","descricao":"O que contém"}]
+}
+
+REGRAS para links_oficiais:
+- ANAC: use https://www.anac.gov.br/assuntos/legislacao/legislacao-1/rbha-e-rbac/rbac/rbac-XX (substituindo XX) ou https://www.anac.gov.br/assuntos/legislacao — NUNCA use /pt-br/assuntos (retorna 404)
+- FAA: use https://www.faa.gov/regulations_policies ou https://www.ecfr.gov/current/title-14/chapter-I/subchapter-D/part-XX
+- EASA: use https://www.easa.europa.eu/en/document-library/regulations ou https://www.easa.europa.eu/en/document-library/easy-access-rules
+- Mínimo 2 links específicos.
+
+NÃO use frases genéricas. Preencha TODOS os campos com conteúdo técnico real.`;
+
+  try {
+    const response = await fetch("/.netlify/functions/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        system: systemPrompt,
+        messages: [{ role: "user", content: question }]
+      })
+    });
+
+    const data = await response.json();
+    const rawText = data.content.map(i => i.text || '').join('');
+
+    let parsed;
+    try {
+      parsed = JSON.parse(rawText.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      const match = rawText.match(/\{[\s\S]*\}/);
+      if (match) { try { parsed = JSON.parse(match[0]); } catch(e2) {} }
+      if (!parsed) {
+        parsed = {
+          explicacao_tecnica: rawText || "Erro ao processar.",
+          explicacao_operacional: "Tente reformular a pergunta.",
+          explicacao_regulatoria: "Tente reformular a pergunta.",
+          impacto_seguranca: "Tente reformular a pergunta.",
+          aeronavegabilidade: "Tente reformular a pergunta.",
+          exemplo_real: "Tente reformular a pergunta.",
+          referencia_normativa: info.label + " — regulamentos vigentes",
+          links_oficiais: [{ titulo: "Portal " + info.label, url: info.url, descricao: "Acesse o portal oficial" }]
+        };
+      }
+    }
+
+    renderResult(question, parsed, info);
+  } catch(err) {
+    document.getElementById('loading-block').classList.remove('visible');
+    alert('Erro de conexão. Verifique sua internet e tente novamente.');
+  }
+
+  btn.disabled = false;
+}
+
+// ── RENDER
+function renderResult(question, data, info) {
+  document.getElementById('loading-block').classList.remove('visible');
+
+  const badge = document.getElementById('result-badge');
+  badge.textContent = info.label;
+  badge.className = 'result-authority-badge ' + info.badge;
+  document.getElementById('result-query').textContent = '"' + question + '"';
+
+  const sections = [
+    { num:'01', icon:'🔧', label:'Explicação Técnica',              key:'explicacao_tecnica',    type:'text' },
+    { num:'02', icon:'✈',  label:'Explicação Operacional',          key:'explicacao_operacional', type:'text' },
+    { num:'03', icon:'📋', label:'Explicação Regulatória',          key:'explicacao_regulatoria', type:'reg'  },
+    { num:'04', icon:'🛡', label:'Impacto na Segurança Operacional',key:'impacto_seguranca',      type:'safety'},
+    { num:'05', icon:'⚙', label:'Relação com a Aeronavegabilidade',key:'aeronavegabilidade',     type:'text' },
+    { num:'06', icon:'📖', label:'Exemplo Real',                    key:'exemplo_real',           type:'example'},
+    { num:'07', icon:'📌', label:'Referência Normativa',            key:'referencia_normativa',   type:'ref'  },
+    { num:'08', icon:'🔗', label:'Links Oficiais da Legislação',    key:'links_oficiais',         type:'links'},
+  ];
+
+  const container = document.getElementById('result-sections');
+  container.innerHTML = '';
+
+  sections.forEach((s, i) => {
+    const val = data[s.key];
+    let contentHTML = '';
+
+    if (s.type === 'links') {
+      const links = Array.isArray(val) ? val : [{ titulo: 'Portal ' + info.label, url: info.url, descricao: 'Portal oficial' }];
+      contentHTML = '<div class="links-grid">' + links.map(l => `
+        <a href="${l.url}" target="_blank" rel="noopener" class="link-card">
+          <div class="link-card-title">🔗 ${l.titulo || 'Link oficial'}</div>
+          <div class="link-card-desc">${l.descricao || ''}</div>
+          <div class="link-card-url">${(l.url||'').replace('https://','').substring(0,55)}${(l.url||'').length>58?'…':''}</div>
+        </a>`).join('') + '</div>';
+
+    } else if (s.type === 'ref') {
+      const refs = (val||'').split(/\||\n/).map(r=>r.trim()).filter(r=>r.length>3);
+      contentHTML = '<div class="ref-list">' + refs.map(r =>
+        `<div class="ref-item"><span class="ref-tag-inline">📌</span> ${r}</div>`
+      ).join('') + '</div>';
+
+    } else if (s.type === 'reg') {
+      const highlighted = (val||'').replace(
+        /\b(RBAC\s+\d+[\w.]*|FAR\s+Part\s+\d+[\w.]*|14\s+CFR\s+Part\s+\d+[\w.]*|CS-[\w.]+|AMC\s+[\w.]+|Part\s+\d+[\w.]*|Seção\s+[\d.]+[\w]*|Section\s+[\d.]+[\w]*|§\s*[\d.]+[\w]*|RBHA\s+\d+[\w.]*)/gi,
+        '<span class="reg-highlight">$1</span>'
+      );
+      contentHTML = `<div class="reg-content">${highlighted.replace(/\n/g,'<br>')}</div>`;
+
+    } else if (s.type === 'example') {
+      contentHTML = `<div class="example-box">💡 ${(val||'').replace(/\n/g,'<br>')}</div>
+        <div class="example-disclaimer">⚠️ Exemplo gerado por IA com base em ocorrências documentadas. Verifique nas fontes oficiais (CENIPA, NTSB, BEA) antes de usar em documentos técnicos.</div>`;
+
+    } else if (s.type === 'safety') {
+      contentHTML = `<div class="safety-box">⚠️ ${(val||'').replace(/\n/g,'<br>')}</div>`;
+
+    } else {
+      contentHTML = `<div class="text-content">${(val||'Não disponível.').replace(/\n/g,'<br>')}</div>`;
+    }
+
+    const isFirst = i === 0;
+    const div = document.createElement('div');
+    div.className = 'result-section' + (isFirst ? ' active-section' : '');
+    div.innerHTML = `
+      <div class="section-header" onclick="toggleSection(this)">
+        <div class="section-num">${s.num}</div>
+        <span class="section-icon">${s.icon}</span>
+        <span class="section-label">${s.label}</span>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-content${isFirst ? ' open' : ''}">${contentHTML}</div>`;
+    container.appendChild(div);
+  });
+
+  document.getElementById('result-block').classList.add('visible');
+  setTimeout(() => {
+    document.getElementById('result-block').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function toggleSection(header) {
+  const section = header.parentElement;
+  const content = section.querySelector('.section-content');
+  const isOpen = content.classList.contains('open');
+  content.classList.toggle('open', !isOpen);
+  section.classList.toggle('active-section', !isOpen);
+}
+
+selectAuth('faa');
+</script>
+</body>
+</html>
